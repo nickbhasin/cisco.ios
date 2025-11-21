@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 jobs:
   lab-create:
-    uses: ansible/ansible-content-actions/.github/workflows/cml_lab_create.yaml@main
+    uses: nickbhasin/ansible-content-actions/.github/workflows/cml_lab_create.yaml@cml_httpapi_support
     with:
       topology_path: tests/integration/labs/multi.yaml
       # lab_title_override: "Optional custom lab title"
@@ -29,7 +29,7 @@ jobs:
       fail-fast: true
       matrix:
         ansible_version: ["stable-2.16", "stable-2.18", "stable-2.19", "milestone", "devel"]
-    uses: ansible/ansible-content-actions/.github/workflows/cml_network_integration.yaml@main
+    uses: nickbhasin/ansible-content-actions/.github/workflows/cml_network_integration.yaml@cml_httpapi_support
     with:
       ansible_version: ${{ matrix.ansible_version }}
       lab_nodes: ${{ needs.lab-create.outputs.lab_nodes_json }}
@@ -37,7 +37,7 @@ jobs:
   lab-destroy:
     if: ${{ always() }}
     needs: integration-tests-libssh
-    uses: ansible/ansible-content-actions/.github/workflows/cml_lab_destroy.yaml@main
+    uses: nickbhasin/ansible-content-actions/.github/workflows/cml_lab_destroy.yaml@cml_httpapi_support
     secrets:
       virl_host: ${{ secrets.VIRL_HOST }}
       virl_username: ${{ secrets.VIRL_USERNAME }}
